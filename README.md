@@ -1,4 +1,6 @@
-# A Held & Hou Atmosphere
+# zaaNSE: A Held & Hou Atmosphere
+
+zaaNSE is the attempt to simulate a zonally averaged atmosphere, using the Navier-Stokes equations -- it is also the failed attempt to come up with a good name for a toy project, which is why it might come up when someone is looking at [areas in the Netherlands](https://en.wikipedia.org/wiki/Zaanse_Schans).
 
 This is an experiment to see if we can implement a stable 2D Finite Difference discretization of the zonally averaged 3D Navier-Stokes equations on the sphere.
 Ideally, we get something which produces similar results as Held & Hou in their 1980 paper. \[1\]
