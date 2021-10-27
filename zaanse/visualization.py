@@ -28,14 +28,16 @@ def plot_scalar_field(field, levels=10, title=""):
 
     contour_plot = ax.contourf(X, Y, field, levels, cmap=plt.cm.viridis)
 
-    ax.set_xlabel(r"Angle $\phi$ [rad]")
+    ax.set_xlabel(r"$\varphi$")
     ax.set_ylabel(r"Height index")
     ax.set_title(title)
 
     # represent x-axis ticks in units of pi
-    ax.xaxis.set_major_locator(plt.MultipleLocator(np.pi / 2))
-    ax.xaxis.set_minor_locator(plt.MultipleLocator(np.pi / 12))
-    ax.xaxis.set_major_formatter(plt.FuncFormatter(multiple_formatter()))
+    ticks = np.linspace(-1, 1, 4, endpoint=False)
+    tick_labels = [f"{(round(2 * t))} $\pi$" for t in ticks]
+    ax.set_xticks(ticks)
+    ax.set_xticklabels(tick_labels)
+
 
     fig.colorbar(contour_plot)
 
@@ -103,14 +105,15 @@ def plot_vector_field(field_x, field_y, scalar_field=None, density=(1, 2), title
         arrowsize=0.7,
     )
 
-    ax.set_xlabel(r"Angle $\phi$ [rad]")
+    ax.set_xlabel(r"$\varphi$")
     ax.set_ylabel(r"Height index")
     ax.set_title(title)
 
     # represent x-axis ticks in units of pi
-    ax.xaxis.set_major_locator(plt.MultipleLocator(np.pi / 2))
-    ax.xaxis.set_minor_locator(plt.MultipleLocator(np.pi / 12))
-    ax.xaxis.set_major_formatter(plt.FuncFormatter(multiple_formatter()))
+    ticks = np.linspace(-1, 1, 4, endpoint=False)
+    tick_labels = [f"{(round(2 * t))} $\pi$" for t in ticks]
+    ax.set_xticks(ticks)
+    ax.set_xticklabels(tick_labels)
 
     try:
         plt.savefig(f"plots/{title}.png", dpi=300, bbox_inches="tight")
@@ -118,45 +121,3 @@ def plot_vector_field(field_x, field_y, scalar_field=None, density=(1, 2), title
         os.mkdir("plots")
         plt.savefig(f"plots/{title}.png", dpi=300, bbox_inches="tight")
 
-
-# this solution is taken from https://stackoverflow.com/a/53586826
-
-def multiple_formatter(denominator=2, number=np.pi, latex='\pi'):
-    def gcd(a, b):
-        while b:
-            a, b = b, a%b
-        return a
-    def _multiple_formatter(x, pos):
-        den = denominator
-        num = int(np.rint(den*x/number))
-        com = gcd(num,den)
-        (num,den) = (int(num/com),int(den/com))
-        if den==1:
-            if num==0:
-                return r'$0$'
-            if num==1:
-                return r'$%s$'%latex
-            elif num==-1:
-                return r'$-%s$'%latex
-            else:
-                return r'$%s%s$'%(num,latex)
-        else:
-            if num==1:
-                return r'$\frac{%s}{%s}$'%(latex,den)
-            elif num==-1:
-                return r'$\frac{-%s}{%s}$'%(latex,den)
-            else:
-                return r'$\frac{%s%s}{%s}$'%(num,latex,den)
-    return _multiple_formatter
-
-class Multiple:
-    def __init__(self, denominator=2, number=np.pi, latex='\pi'):
-        self.denominator = denominator
-        self.number = number
-        self.latex = latex
-
-    def locator(self):
-        return plt.MultipleLocator(self.number / self.denominator)
-
-    def formatter(self):
-        return plt.FuncFormatter(multiple_formatter(self.denominator, self.number, self.latex))
