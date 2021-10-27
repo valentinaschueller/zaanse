@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -37,7 +39,12 @@ def plot_scalar_field(field, levels=10, title=""):
 
     fig.colorbar(contour_plot)
 
-    plt.savefig(f"plots/{title}.png", dpi=300, bbox_inches="tight")
+    try:
+        plt.savefig(f"plots/{title}.png", dpi=300, bbox_inches="tight")
+    except FileNotFoundError:
+        os.mkdir("plots")
+        plt.savefig(f"plots/{title}.png", dpi=300, bbox_inches="tight")
+
 
 
 def plot_vector_field(field_x, field_y, scalar_field=None, density=(1, 2), title=""):
@@ -105,7 +112,11 @@ def plot_vector_field(field_x, field_y, scalar_field=None, density=(1, 2), title
     ax.xaxis.set_minor_locator(plt.MultipleLocator(np.pi / 12))
     ax.xaxis.set_major_formatter(plt.FuncFormatter(multiple_formatter()))
 
-    plt.savefig(f"plots/{title}.png", dpi=300, bbox_inches="tight")
+    try:
+        plt.savefig(f"plots/{title}.png", dpi=300, bbox_inches="tight")
+    except FileNotFoundError:
+        os.mkdir("plots")
+        plt.savefig(f"plots/{title}.png", dpi=300, bbox_inches="tight")
 
 
 # this solution is taken from https://stackoverflow.com/a/53586826
